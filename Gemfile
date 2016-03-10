@@ -52,6 +52,5 @@ end
 group :test do
   gem 'minitest'
   gem 'minitest-reporters'
-  gem 'shoulda', '>= 3.5.0'
 end
 
