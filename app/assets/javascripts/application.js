@@ -23,6 +23,8 @@ ready = function() {
     run.click(function() {
         run.hide();
         stop.show();
+
+        $('#last-commodities tr:first').after('<tr><td>' + 'bar' + '</td><td>' + 'foo' + '</td></tr>');
     });
 
     stop.click(function() {
