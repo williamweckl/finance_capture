@@ -1,6 +1,7 @@
 <h1>Financial Capture</h1>
 
 <h3>Last commodities</h3>
+<% if @commodities.size > 0 %>
 <table class="table table-striped" id="last-commodities">
   <thead>
   <tr>
@@ -10,13 +11,18 @@
   </thead>
   <tbody>
   <% @commodities.each do |commodity| %>
-      <tr>
+      <tr id="commodity-<%= commodity[:name] %>">
         <td><%= commodity[:name] %></td>
         <td><%= commodity[:price_sales] %></td>
       </tr>
   <% end %>
   </tbody>
 </table>
+<% else %>
+    <p>Commodities empty, please run to capture</p>
+<% end %>
+
+<hr></hr>
 
 <p>Click the button below to start/stop capture commodities</p>
 

@@ -24,7 +24,14 @@ ready = function() {
         run.hide();
         stop.show();
 
-        $('#last-commodities tr:first').after('<tr><td>' + 'bar' + '</td><td>' + 'foo' + '</td></tr>');
+        var name = 'GOOG'
+        var commoditytr = $('#commodity-' + name);
+        var trHtml = '<td>' + name + '</td><td>' + '11.0' + '</td>'
+        if (commoditytr.length) {
+            commoditytr.html(trHtml)
+        } else {
+            $('#last-commodities tr:first').after('<tr id="commodity-' + name + '">' + trHtml + '</tr>');
+        }
     });
 
     stop.click(function() {
