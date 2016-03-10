@@ -1,2 +1,20 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<h1>Financial Capture</h1>
+
+<h3>Last commodities</h3>
+<table class="table table-striped" id="last-commodities">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Price sales</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @commodities.each do |commodity| %>
+      <tr>
+        <td><%= commodity[:name] %></td>
+        <td><%= commodity[:price_sales] %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
