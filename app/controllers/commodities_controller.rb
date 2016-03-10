@@ -6,7 +6,8 @@ class CommoditiesController < ApplicationController
     sse = SSE.new(response.stream)
     begin
       loop do
-        sse.write('a')
+        $redis.zadd("commodities", 10.0, 'GOOG')
+        sse.write({name: 'GOOG', price_sales: 10.0}.to_json)
         sleep 1
       end
     rescue IOError
