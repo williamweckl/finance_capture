@@ -20,6 +20,7 @@ The goal is to capture five commodity prices from Yahoo Finance at a configurabl
 The application have a web page with the last commodities captured from the Yahoo API and a button to start the capture process.
 There is an input to configure the time to get new commodities from the API and a button to stop the process too.
 Every commodity the process collect, is shown in the screen.
+Errors are handled too, if the Yahoo API does not respond or respond with error or invalid json, an error message is shown in the screen.
 
 ## Faced obstacles
 
