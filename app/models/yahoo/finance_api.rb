@@ -15,7 +15,7 @@ module Yahoo
       }
       response = HTTParty.get(@api_url, query: query)
 
-      if response.code == 200
+      if response.code = 200
         commodities = []
         json = JSON.parse(response.body)
 
@@ -30,16 +30,16 @@ module Yahoo
               $redis.set(quote['symbol'], commodity.to_json)
               commodities << commodity
             else
-              #   TODO
+              {error: 'Yahoo API data returned is not well formated.'}
             end
           rescue
-              #   TODO
+            {error: 'Yahoo API data returned is not well formated.'}
           end
         end
 
         commodities
       else
-      #   TODO
+        {error: 'an error occurred while using Yahoo API.'}
       end
     end
 

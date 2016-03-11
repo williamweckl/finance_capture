@@ -1,15 +1,3 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
-//
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
-// about supported directives.
-//
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
@@ -17,6 +5,18 @@
 
 var ready;
 ready = function() {
+    function createLog(type, message) {
+        $('#capture-logs').prepend('<div class="alert alert-' + type + '" role="alert">' + message + '</div>')
+    };
+
+    function addError(message) {
+        createLog('danger', message);
+    };
+
+    function addSuccess(message) {
+        createLog('success', message);
+    };
+
     var source;
     var run = $('#run');
     var stop = $('#stop');
@@ -27,25 +27,37 @@ ready = function() {
         source.onopen = function(ev) {
             run.hide();
             stop.show();
+            //show logs
+            $('#capture-logs-title').show();
+            $('#capture-logs').show();
         }
         source.onmessage = function(ev) {
             var json = jQuery.parseJSON(ev.data);
-            $.each(json, function(index, commodity) {
-                var id = commodity.symbol.replace(/\./g,'-');
-                var commoditytr = $('#commodity-' + id);
-                var trHtml = '<td>' + commodity.symbol + '</td><td>' + commodity.name + '</td><td>' + commodity.last_trade_price + '</td><td>' + commodity.change + ' %</td>';
+            if (json.error) {
+                //Yahoo api errors
+                addError(json.error);
+            } else {
+                $.each(json, function(index, commodity) {
+                    var id = commodity.symbol.replace(/\./g,'-');
+                    var commoditytr = $('#commodity-' + id);
+                    var trHtml = '<td>' + commodity.symbol + '</td><td>' + commodity.name + '</td><td>' + commodity.last_trade_price + '</td><td>' + commodity.change + ' %</td>';
 
-                if (commoditytr.length) {
-                    commoditytr.html(trHtml)
-                } else {
-                    $('#last-commodities').show();
-                    $('#last-commodities tr:last').after('<tr id="commodity-' + id + '">' + trHtml + '</tr>');
-                    $('#commodities-empty').hide();
-                }
-            });
+                    if (commoditytr.length) {
+                        commoditytr.html(trHtml)
+                    } else {
+                        $('#last-commodities').show();
+                        $('#last-commodities tr:last').after('<tr id="commodity-' + id + '">' + trHtml + '</tr>');
+                        $('#commodities-empty').hide();
+                    }
+
+                    //Add log
+                    log = commodity.symbol + ' - ' + commodity.name + ' - ' + commodity.last_trade_price + ' - ' + commodity.change
+                    addSuccess(log);
+                });
+            }
         }
         source.onerror = function(ev) {
-            //TODO
+            addError('Something went wrong with the capture process. Please try again.');
             run.hide();
             stop.show();
         }
