@@ -15,7 +15,7 @@ module Yahoo
       }
       response = HTTParty.get(@api_url, query: query)
 
-      if response.code = 200
+      if response.code == 200
         commodities = []
         json = JSON.parse(response.body)
 
