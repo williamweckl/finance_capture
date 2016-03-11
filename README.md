@@ -2,7 +2,7 @@
 
 This application was developed for a job test to work in [YouDo](http://youdo.co.nz).
 
-The goal is to capture at five commodity prices from Yahoo Finance at a configurable regular time interval.
+The goal is to capture five commodity prices from Yahoo Finance at a configurable regular time interval.
 
 ## Technologies used
 
