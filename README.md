@@ -25,6 +25,7 @@ Every commodity the process collect, is shown in the screen.
 
 - Tried to do integrations tests with SSE events with Capybara, Poltergeist and Capybara-webkit without success. Rails documentation does not provides a way to test the Live Stream. I was forced to abandon the idea of testing the SSE.
 - I do not know much about finances, that's why I'm not sure if the data that I've got from the API is useful.
+- To SSE thread does not lock the server and prevent new requests, I had to change development environment configs: `config.cache_classes` and `config.eager_load` to `true`.
 
 ## Final considerations
 
