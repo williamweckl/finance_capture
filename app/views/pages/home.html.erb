@@ -29,7 +29,10 @@
 
 <p>Click the button below to start/stop capture commodities</p>
 
-<%= form_tag commodities_capture_path, :method => 'get', :id => 'run' do %>
+<%= form_tag commodities_capture_path, :method => 'get', :id => 'run', class: 'form-inline' do %>
+    <div class="form-group">
+      <%= text_field_tag :time_in_minutes, params[:time_in_minutes], type: :number, class: 'form-control', placeholder: 'Time interval (minutes)' %>
+    </div>
     <%= submit_tag "Run now", :class => 'btn btn-primary' %>
 <% end %>
 

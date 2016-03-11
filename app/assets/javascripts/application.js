@@ -23,7 +23,8 @@ ready = function() {
 
     run.submit(function (event) {
         event.preventDefault();
-        source = new EventSource(run.attr('action'));
+        var input = $('#time_in_minutes');
+        source = new EventSource(run.attr('action') + '?time_in_minutes=' + input.val());
         source.onopen = function(ev) {
             run.hide();
             stop.show();
