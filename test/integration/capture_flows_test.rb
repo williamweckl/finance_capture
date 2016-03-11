@@ -14,28 +14,18 @@ class CaptureFlowsTest < ActionDispatch::IntegrationTest
     page.must_have_content('Financial Capture')
   end
 
-  test 'capture' do
-    visit '/'
-
-    click_button 'Run'
-    assert page.has_selector?(:link_or_button, 'Stop', visible: true)
-    assert page.has_selector?(:link_or_button, 'Run', visible: false)
-
-    click_button 'Stop'
-    assert page.has_selector?(:link_or_button, 'Run', visible: true)
-    assert page.has_selector?(:link_or_button, 'Stop', visible: false)
-  end
-
   test 'empty state commodities' do
-    assert_nil $redis.zscore('commodities', 'GOOG')
+    assert_nil $redis.get('GOOG')
 
     visit '/'
     page.must_have_content('Commodities empty, please run to capture')
-    assert_nil page.find_by_id('commodity-GOOG')
+    assert_raises Capybara::ElementNotFound do
+      page.find_by_id('commodity-GOOG')
+    end
   end
 
   test 'commodities list' do
-    $redis.zadd('commodities', 10.0, 'GOOG')
+    $redis.set('GOOG', {"symbol":"GOOG","name":"Alphabet Inc.","change":7.58,"last_trade_price":712.82}.to_json)
 
     visit '/'
     page.must_have_content('GOOG')

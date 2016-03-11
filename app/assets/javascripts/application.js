@@ -17,24 +17,42 @@
 
 var ready;
 ready = function() {
+    var source;
     var run = $('#run');
     var stop = $('#stop');
 
-    run.click(function() {
-        run.hide();
-        stop.show();
+    run.submit(function (event) {
+        event.preventDefault();
+        source = new EventSource(run.attr('action'));
+        source.onopen = function(ev) {
+            run.hide();
+            stop.show();
+        }
+        source.onmessage = function(ev) {
+            var json = jQuery.parseJSON(ev.data);
+            $.each(json, function(index, commodity) {
+                var id = commodity.symbol.replace(/\./g,'-');
+                var commoditytr = $('#commodity-' + id);
+                var trHtml = '<td>' + commodity.symbol + '</td><td>' + commodity.name + '</td><td>' + commodity.last_trade_price + '</td><td>' + commodity.change + ' %</td>';
 
-        var name = 'GOOG'
-        var commoditytr = $('#commodity-' + name);
-        var trHtml = '<td>' + name + '</td><td>' + '11.0' + '</td>'
-        if (commoditytr.length) {
-            commoditytr.html(trHtml)
-        } else {
-            $('#last-commodities tr:first').after('<tr id="commodity-' + name + '">' + trHtml + '</tr>');
+                if (commoditytr.length) {
+                    commoditytr.html(trHtml)
+                } else {
+                    $('#last-commodities').show();
+                    $('#last-commodities tr:last').after('<tr id="commodity-' + id + '">' + trHtml + '</tr>');
+                    $('#commodities-empty').hide();
+                }
+            });
+        }
+        source.onerror = function(ev) {
+            //TODO
+            run.hide();
+            stop.show();
         }
     });
 
     stop.click(function() {
+        source.close();
         stop.hide();
         run.show();
     });

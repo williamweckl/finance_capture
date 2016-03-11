@@ -1,11 +1,11 @@
 class PagesController < ApplicationController
   def home
-    companies = ["YHOO","AAPL","GOOG","MSFT","BZK16.NYM"]
+    companies = ["YHOO","AAPL","GOOG","MSFT","CCH16.NYB"]
     @commodities = []
     companies.each do |company|
-      price_sales = $redis.zscore('commodities', company)
-      if price_sales
-        @commodities << {name: company, price_sales: price_sales}
+      commodity = $redis.get(company)
+      if commodity
+        @commodities << JSON::parse(commodity).merge(id: company)
       end
     end
   end
